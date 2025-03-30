@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .search-form {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        .search-form input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .search-form button {
+            padding: 8px 15px;
+            border: none;
+            background: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .contact-list {
+            list-style: none;
+        }
+        .contact-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background: #fff;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .actions a {
+            text-decoration: none;
+            margin-left: 10px;
+            color: #007bff;
+        }
+        .add-btn {
+            display: block;
+            text-align: center;
+            padding: 10px;
+            background: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Contact List</h1>
+        <form method="GET" class="search-form">
+            <input type="text" name="q" placeholder="Search by name or email" value="{{ query }}" required>
+            <button type="submit"><i class="fas fa-search"></i></button>
+        </form>
+        <ul class="contact-list">
+        {% if no_result %}
+        <li style="text-align: center; color: red; font-weight: bold; padding: 10px;">
+            No contacts found for {{query}}.
+        </li>
+        {% else %}
+            {% for contact in contacts %}
+                <li class="contact-item">
+                    <span>{{ contact.name }} - {{ contact.email }}</span>
+                    <div class="actions">
+                        <a href="{% url 'edit_contact' contact.id %}"><i class="fas fa-edit"></i> Edit</a>
+                        <a href="{% url 'delete_contact' contact.id %}" style="color: red;"><i class="fas fa-trash"></i> Delete</a>
+                    </div>
+                </li>
+            {% endfor %}
+            {% endif %}
+        </ul>
+        <a href="{% url 'add_contact' %}" class="add-btn"><i class="fas fa-plus"></i> Add Contact</a>
+    </div>
+</body>
+</html>
